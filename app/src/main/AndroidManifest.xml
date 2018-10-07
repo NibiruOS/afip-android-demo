@@ -23,7 +23,7 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TiposIvaActivity"
+            android:name=".ParametrosActivity"
             android:label="@string/title_activity_tipos_iva"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
