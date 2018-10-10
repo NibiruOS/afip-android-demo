@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bb97b08d37dd065a7a7b47072e485183",
+    "identityHash": "3e4c4060ee522bba7211a214efd56fbe",
     "entities": [
       {
-        "tableName": "company",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `active` INTEGER NOT NULL, `unit` TEXT, `cuit` TEXT, `publicKey` TEXT, `privateKey` TEXT, `certificate` TEXT, `grossIncome` TEXT, `activityStartDate` INTEGER, `taxCategory` TEXT, `address` TEXT, `location` TEXT, `alias` TEXT, `token` TEXT, `sign` TEXT)",
+        "tableName": "Company",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `active` INTEGER NOT NULL, `unit` TEXT, `cuit` TEXT, `publicKey` TEXT, `privateKey` TEXT, `certificate` TEXT, `grossIncome` TEXT, `activityStartDate` INTEGER, `taxCategory` TEXT, `address` TEXT, `location` TEXT, `alias` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -91,6 +91,32 @@
             "columnName": "alias",
             "affinity": "TEXT",
             "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ServiceCredentials",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`companyId` INTEGER NOT NULL, `service` TEXT NOT NULL, `token` TEXT, `sign` TEXT, PRIMARY KEY(`companyId`, `service`), FOREIGN KEY(`companyId`) REFERENCES `Company`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "companyId",
+            "columnName": "companyId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "service",
+            "columnName": "service",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "token",
@@ -107,17 +133,39 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "companyId",
+            "service"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
-        "indices": [],
-        "foreignKeys": []
+        "indices": [
+          {
+            "name": "index_ServiceCredentials_companyId",
+            "unique": false,
+            "columnNames": [
+              "companyId"
+            ],
+            "createSql": "CREATE  INDEX `index_ServiceCredentials_companyId` ON `${TABLE_NAME}` (`companyId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Company",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "companyId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bb97b08d37dd065a7a7b47072e485183\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3e4c4060ee522bba7211a214efd56fbe\")"
     ]
   }
 }

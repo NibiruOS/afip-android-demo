@@ -1,13 +1,10 @@
 package ar.com.brasseur.afipandroid;
 
-import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
-
-import org.xmlpull.v1.XmlPullParser;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -15,25 +12,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.inject.Provider;
+import javax.inject.Inject;
 
-import ar.com.brasseur.afipandroid.data.AfipDatabase;
-import ar.com.brasseur.afipandroid.ioc.XmlPullParserProvider;
-import ar.com.brasseur.afipandroid.ioc.XmlSerializerProvider;
-import ar.com.system.afip.android.common.service.RetrofitBuilderProvider;
-import ar.com.system.afip.android.wsaa.business.SerializerProvider;
-import ar.com.system.afip.android.wsaa.business.SimpleXmlConverter;
-import ar.com.system.afip.android.wsaa.data.RoomWsaaDao;
-import ar.com.system.afip.android.wsaa.service.LoginCmsImpl;
-import ar.com.system.afip.android.wsaa.service.RetrofitLoginCmsProvider;
 import ar.com.system.afip.wsaa.business.api.WsaaManager;
-import ar.com.system.afip.wsaa.business.impl.BouncyCastleWsaaManager;
 import ar.com.system.afip.wsaa.data.api.CompanyInfo;
 import ar.com.system.afip.wsaa.data.api.TaxCategory;
 import ar.com.system.afip.wsaa.data.api.WsaaDao;
-import ar.com.system.afip.wsaa.data.impl.HomoSetupDao;
-import io.github.nibiruos.retrosoap.ServiceFactory;
-import io.github.nibiruos.retrosoap.WsdlParser;
+import dagger.android.AndroidInjection;
 
 public class SettingsActivity extends AppCompatActivity {
     private static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -65,20 +50,22 @@ public class SettingsActivity extends AppCompatActivity {
 
     EditText alias;
 
-    private WsaaDao wsaaDao;
+    @Inject
+    WsaaDao wsaaDao;
 
-    private WsaaManager wsaaManager;
+    @Inject
+    WsaaManager wsaaManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new Thread(() -> {
+            AndroidInjection.inject(this);
+        }).start();
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show());
         name = findViewById(R.id.name);
         unit = findViewById(R.id.unit);
         cuit = findViewById(R.id.cuit);
@@ -97,27 +84,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .setOnClickListener(this::buildKeys);
         findViewById(R.id.buildCsr)
                 .setOnClickListener(this::buildCsr);
-
-        // TODO: reemplazar por inyeccion de dependencias
-        new Thread(() -> {
-            AfipDatabase afipDatabase = Room.databaseBuilder(getApplication(),
-                    AfipDatabase.class,
-                    AfipDatabase.DB_NAME).build();
-
-            wsaaDao = new RoomWsaaDao(afipDatabase.companyDao());
-
-            Provider<XmlPullParser> pullParserProvider = new XmlPullParserProvider();
-            wsaaManager = new BouncyCastleWsaaManager(wsaaDao,
-                    new HomoSetupDao(),
-                    new LoginCmsImpl(new RetrofitLoginCmsProvider(new HomoSetupDao(),
-                            new ServiceFactory(
-                                    new WsdlParser(pullParserProvider),
-                                    new RetrofitBuilderProvider(new XmlSerializerProvider(),
-                                            pullParserProvider)))
-                            .get()),
-                    new SimpleXmlConverter(new SerializerProvider().get()));
-            runOnUiThread(this::read);
-        }).start();
     }
 
     @Override
