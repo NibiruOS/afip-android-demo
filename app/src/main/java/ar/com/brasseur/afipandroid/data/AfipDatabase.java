@@ -5,8 +5,8 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 
-import ar.com.system.afip.android.wsaa.data.CompanyDao;
 import ar.com.system.afip.android.wsaa.data.DateTypeConverter;
+import ar.com.system.afip.android.wsaa.data.dao.RoomCredentialsDao;
 import ar.com.system.afip.android.wsaa.data.TaxCategoryConverter;
 import ar.com.system.afip.android.wsaa.data.model.Company;
 
@@ -17,5 +17,7 @@ import ar.com.system.afip.android.wsaa.data.model.Company;
 public abstract class AfipDatabase extends RoomDatabase {
     public static final String DB_NAME = "afip.db";
 
-    public abstract CompanyDao companyDao();
+    public abstract RoomCompanyDao companyDao();
+
+    public abstract RoomCredentialsDao credentialsDao();
 }

@@ -28,6 +28,7 @@ android {
     }
 }
 
+def daggerVersion = "2.16"
 def roomVersion = "1.1.1"
 
 dependencies {
@@ -36,7 +37,12 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'io.github.nibiruos.afip:ar.com.system.afip.android:0.1-SNAPSHOT'
     implementation 'com.android.support:design:26.1.0'
+    implementation "com.google.dagger:dagger-android:${daggerVersion}"
+    implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
+    implementation "com.google.guava:guava:26.0-android"
     implementation "android.arch.persistence.room:runtime:${roomVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
     annotationProcessor "android.arch.persistence.room:compiler:${roomVersion}"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
