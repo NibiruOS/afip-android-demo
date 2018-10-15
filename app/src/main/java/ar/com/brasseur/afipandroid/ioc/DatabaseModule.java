@@ -8,6 +8,7 @@ import ar.com.system.afip.android.wsaa.data.CredentialsDaoImpl;
 import ar.com.system.afip.android.wsaa.data.WsaaDaoImpl;
 import ar.com.system.afip.android.wsaa.data.dao.RoomCompanyDao;
 import ar.com.system.afip.android.wsaa.data.dao.RoomCredentialsDao;
+import ar.com.system.afip.wsaa.business.api.Service;
 import ar.com.system.afip.wsaa.data.api.CredentialsDao;
 import ar.com.system.afip.wsaa.data.api.SetupDao;
 import ar.com.system.afip.wsaa.data.api.WsaaDao;
@@ -45,7 +46,6 @@ public class DatabaseModule {
 
     @Provides
     public SetupDao provideSetupDao() {
-        return new HomoSetupDao();
+        return new HomoSetupDao(Service.WSFE);
     }
-
 }

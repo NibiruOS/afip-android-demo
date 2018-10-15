@@ -3,7 +3,6 @@ package ar.com.brasseur.afipandroid.ioc;
 import javax.inject.Singleton;
 
 import ar.com.brasseur.afipandroid.AfipApplication;
-import ar.com.brasseur.afipandroid.ParametrosActivity;
 import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
@@ -12,6 +11,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {
         AndroidSupportInjectionModule.class,
         AndroidModule.class,
+        ActivityModule.class,
         ApplicationModule.class,
         BusinessModule.class,
         DatabaseModule.class,

@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">AfipAndroid</string>
     <string name="title_activity_settings">Configuración</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_tipos_iva">TiposIvaActivity</string>
+    <string name="company">Compañía</string>
+    <string name="public_key">Clave Pública</string>
+    <string name="private_key">Clave Privada</string>
+    <string name="certificate">Certificado</string>
+    <string name="csr">CSR</string>
+    <string name="actions">Acciones</string>
+    <string name="company_name">Nombre Compañia</string>
+    <string name="unit">Unidad</string>
+    <string name="cuit">CUIT</string>
+    <string name="build_keys">Generar claves</string>
+    <string name="build_csr">Generar CSR</string>
+    <string name="gross_income">Ingresos Brutos</string>
+    <string name="activity_start_date">Inicio Actividades</string>
+    <string name="tax_category">Categoría IVA</string>
+    <string name="address">Dirección</string>
+    <string name="location">Ciudad</string>
+    <string name="alias">Alias</string>
 </resources>
